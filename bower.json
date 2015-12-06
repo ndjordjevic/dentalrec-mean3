@@ -1,0 +1,24 @@
+{
+  "name": "dentalrec-mean3",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "~1.4.8",
+    "json3": "~3.3.2",
+    "es5-shim": "~4.3.1",
+    "bootstrap-sass-official": "~3.3.6",
+    "bootstrap": "~3.3.6",
+    "bootstrap-social": "~4.11.0",
+    "angular-resource": "~1.4.8",
+    "angular-cookies": "~1.4.8",
+    "angular-sanitize": "~1.4.8",
+    "angular-bootstrap": "~0.14.3",
+    "font-awesome": ">=4.5.0",
+    "lodash": "~3.10.1",
+    "angular-socket-io": "~0.7.0",
+    "angular-ui-router": "~0.2.15",
+    "angular-validation-match": "~1.6.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.8"
+  }
+}

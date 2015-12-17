@@ -544,7 +544,7 @@ module.exports = function (grunt) {
         //optional: [
         //  'es7.classProperties'
         //],
-        presets: ['babel-preset-es2015']
+        presets: ['es2015']
       },
       client: {
         files: [{

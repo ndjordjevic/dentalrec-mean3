@@ -3,12 +3,13 @@
 var config = browser.params;
 var UserModel = require(config.serverConfig.root + '/server/api/user/user.model');
 
-describe('Login View', function() {
+describe('Login View', function () {
   var page;
 
-  var loadPage = function() {
+  var loadPage = function (done) {
     browser.get(config.baseUrl + '/login');
     page = require('./login.po');
+    done();
   };
 
   var testUser = {
@@ -17,16 +18,15 @@ describe('Login View', function() {
     password: 'test'
   };
 
-  beforeEach(function(done) {
-    UserModel.removeAsync()
-      .then(function() {
-        return UserModel.createAsync(testUser);
+  beforeEach(function (done) {
+    UserModel.remove()
+      .then(function () {
+        return UserModel.create(testUser);
       })
-      .then(loadPage)
-      .finally(done);
+      .then(loadPage(done));
   });
 
-  it('should include login form with correct inputs and submit button', function() {
+  it('should include login form with correct inputs and submit button', function () {
     expect(page.form.email.getAttribute('type')).toBe('email');
     expect(page.form.email.getAttribute('name')).toBe('email');
     expect(page.form.password.getAttribute('type')).toBe('password');
@@ -35,14 +35,14 @@ describe('Login View', function() {
     expect(page.form.submit.getText()).toBe('Login');
   });
 
-  it('should include oauth buttons with correct classes applied', function() {
+  it('should include oauth buttons with correct classes applied', function () {
     expect(page.form.oauthButtons.google.getText()).toBe('Connect with Google+');
     expect(page.form.oauthButtons.google.getAttribute('class')).toMatch('btn-block');
   });
 
-  describe('with local auth', function() {
+  describe('with local auth', function () {
 
-    it('should login a user and redirecting to "/"', function() {
+    it('should login a user and redirecting to "/"', function () {
       page.login(testUser);
 
       var navbar = require('../../components/navbar/navbar.po');
@@ -62,6 +62,5 @@ describe('Login View', function() {
       var helpBlock = page.form.element(by.css('.form-group.has-error .help-block.ng-binding'));
       expect(helpBlock.getText()).toBe('This password is not correct.');
     });
-
   });
 });

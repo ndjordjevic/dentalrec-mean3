@@ -10,6 +10,7 @@ var genUser = function() {
     email: 'test@example.com',
     password: 'password'
   });
+
   return user;
 };
 

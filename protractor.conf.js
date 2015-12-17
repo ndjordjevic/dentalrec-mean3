@@ -25,6 +25,8 @@ var config = {
   // Patterns to exclude.
   exclude: [],
 
+  directConnect: true,
+
   // ----- Capabilities to be passed to the webdriver instance ----
   //
   // For a full list of available capabilities, see
@@ -43,14 +45,15 @@ var config = {
   // Jasmine and Cucumber are fully supported as a test and assertion framework.
   // Mocha has limited beta support. You will need to include your own
   // assertion framework if working with mocha.
-  framework: 'jasmine2',
+  framework: 'jasmine',
 
   // ----- Options to be passed to minijasminenode -----
   //
   // See the full list at https://github.com/jasmine/jasmine-npm
   jasmineNodeOpts: {
     defaultTimeoutInterval: 30000,
-    print: function() {}  // for jasmine-spec-reporter
+    //print: function () {
+    //}  // for jasmine-spec-reporter
   },
 
   // Prepare environment for tests
@@ -58,8 +61,8 @@ var config = {
     serverConfig: require('./server/config/environment')
   },
 
-  onPrepare: function() {
-    require('babel-core/register');
+  onPrepare: function () {
+    require('babel-register');
     var SpecReporter = require('jasmine-spec-reporter');
     // add jasmine spec reporter
     jasmine.getEnv().addReporter(new SpecReporter({displayStacktrace: true}));

@@ -3,10 +3,12 @@
 var config = browser.params;
 var UserModel = require(config.serverConfig.root + '/server/api/user/user.model');
 
-describe('Logout View', function() {
-  var login = function(user) {
+describe('Logout View', function () {
+  var login = function (user, done) {
     browser.get(config.baseUrl + '/login');
-    require('../login/login.po').login(user);
+    require('../login/login.po').login(user).then(function () {
+      done();
+    });
   };
 
   var testUser = {
@@ -15,20 +17,19 @@ describe('Logout View', function() {
     password: 'test'
   };
 
-  beforeEach(function(done) {
-    UserModel.removeAsync()
-      .then(function() {
-        return UserModel.createAsync(testUser);
+  beforeEach(function (done) {
+    UserModel.remove()
+      .then(function () {
+        return UserModel.create(testUser);
       })
-      .then(function() {
-        return login(testUser);
-      })
-      .finally(done);
+      .then(function () {
+        login(testUser, done);
+      });
   });
 
-  describe('with local auth', function() {
+  describe('with local auth', function () {
 
-    it('should logout a user and redirecting to "/"', function() {
+    it('should logout a user and redirecting to "/"', function () {
       var navbar = require('../../components/navbar/navbar.po');
 
       expect(browser.getCurrentUrl()).toBe(config.baseUrl + '/');

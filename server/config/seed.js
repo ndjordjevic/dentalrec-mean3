@@ -7,7 +7,7 @@
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
 
-Thing.find({}).removeAsync()
+Thing.find({}).remove()
   .then(function() {
     Thing.create({
       name: 'Development Tools',
@@ -39,9 +39,9 @@ Thing.find({}).removeAsync()
     });
   });
 
-User.find({}).removeAsync()
+User.find({}).remove()
   .then(function() {
-    User.createAsync({
+    User.create({
       provider: 'local',
       name: 'Test User',
       email: 'test@example.com',

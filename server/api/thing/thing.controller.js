@@ -14,14 +14,14 @@ var Thing = require('./thing.model');
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  return function(err) {
+  return function (err) {
     res.status(statusCode).send(err);
   };
 }
 
 function responseWithResult(res, statusCode) {
   statusCode = statusCode || 200;
-  return function(entity) {
+  return function (entity) {
     if (entity) {
       res.status(statusCode).json(entity);
     }
@@ -29,7 +29,7 @@ function responseWithResult(res, statusCode) {
 }
 
 function handleEntityNotFound(res) {
-  return function(entity) {
+  return function (entity) {
     if (!entity) {
       res.status(404).end();
       return null;
@@ -39,20 +39,19 @@ function handleEntityNotFound(res) {
 }
 
 function saveUpdates(updates) {
-  return function(entity) {
+  return function (entity) {
     var updated = _.merge(entity, updates);
-    return updated.saveAsync()
-      .spread(function(updated) {
-        return updated;
-      });
+    return updated.save().then(function (updated) {
+      return updated;
+    });
   };
 }
 
 function removeEntity(res) {
-  return function(entity) {
+  return function (entity) {
     if (entity) {
-      return entity.removeAsync()
-        .then(function() {
+      return entity.remove()
+        .then(function () {
           res.status(204).end();
         });
     }
@@ -60,43 +59,38 @@ function removeEntity(res) {
 }
 
 // Gets a list of Things
-exports.index = function(req, res) {
-  Thing.findAsync()
-    .then(responseWithResult(res))
-    .catch(handleError(res));
+exports.index = function (req, res) {
+  Thing.find()
+    .then(responseWithResult(res), handleError(res));
 };
 
 // Gets a single Thing from the DB
-exports.show = function(req, res) {
-  Thing.findByIdAsync(req.params.id)
+exports.show = function (req, res) {
+  Thing.findById(req.params.id)
     .then(handleEntityNotFound(res))
-    .then(responseWithResult(res))
-    .catch(handleError(res));
+    .then(responseWithResult(res), handleError(res));
 };
 
 // Creates a new Thing in the DB
-exports.create = function(req, res) {
-  Thing.createAsync(req.body)
-    .then(responseWithResult(res, 201))
-    .catch(handleError(res));
+exports.create = function (req, res) {
+  Thing.create(req.body)
+    .then(responseWithResult(res, 201), handleError(res));
 };
 
 // Updates an existing Thing in the DB
-exports.update = function(req, res) {
+exports.update = function (req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  Thing.findByIdAsync(req.params.id)
+  Thing.findById(req.params.id)
     .then(handleEntityNotFound(res))
     .then(saveUpdates(req.body))
-    .then(responseWithResult(res))
-    .catch(handleError(res));
+    .then(responseWithResult(res), handleError(res));
 };
 
 // Deletes a Thing from the DB
-exports.destroy = function(req, res) {
-  Thing.findByIdAsync(req.params.id)
+exports.destroy = function (req, res) {
+  Thing.findById(req.params.id)
     .then(handleEntityNotFound(res))
-    .then(removeEntity(res))
-    .catch(handleError(res));
+    .then(removeEntity(res), handleError(res));
 };

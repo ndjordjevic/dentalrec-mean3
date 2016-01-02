@@ -30,7 +30,7 @@
     "kerberos": "~0.0"
   },
   "devDependencies": {
-    "autoprefixer": "^6.2.2",
+    "autoprefixer": "^6.2.3",
     "babel-core": "^6.3.26",
     "grunt": "~0.4.5",
     "grunt-wiredep": "^2.0.0",
